@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>高杀伤优雅反击 · 精修版</title>
+<meta name="description" content="从理论到实战：PUA套路解析、五步反击法、10条高杀伤优雅反击、时间轴、快速生成器与参考资料。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext y='50'%3E⚡%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  /* richer, lively palette */
+  --bg:#f6f7ff;
+  --bg-grad: radial-gradient(1200px 600px at 10% -10%, #e7ecff 0%, transparent 60%),
+             radial-gradient(1000px 500px at 110% 20%, #ffe7f0 0%, transparent 60%);
+  --card:#ffffff;
+  --text:#141821;
+  --muted:#5d6b8a;
+  --brand:#4f6dff;         /* primary */
+  --brand-2:#ff6b9d;       /* secondary */
+  --accent:#15b588;        /* success */
+  --danger:#ff4d6d;
+  --ok:#1f9ac7;
+  --ring:0 0 0 3px rgba(79,109,255,.25);
+  --shadow: 0 10px 30px rgba(28,34,71,.12);
+}
+
+/* dark mode gets saturated but cozy */
+body.dark{
+  --bg:#0b0e16;
+  --bg-grad: radial-gradient(1200px 600px at -10% -10%, #0f1a3b 0%, transparent 60%),
+             radial-gradient(1000px 500px at 120% 10%, #311323 0%, transparent 60%);
+  --card:#121729;
+  --text:#eaf0ff;
+  --muted:#a9b4d2;
+  --brand:#7e95ff;
+  --brand-2:#ff86b5;
+  --accent:#5fe0b6;
+  --danger:#ff7b98;
+  --ok:#7ccdf0;
+  --shadow: 0 16px 40px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--text);
+  font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Segoe UI", Roboto, "Noto Sans CJK SC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg); background-image: var(--bg-grad);
+}
+
+/* header */
+header{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:saturate(160%) blur(10px);
+  background: color-mix(in oklab, var(--bg) 75%, transparent);
+  border-bottom:1px solid color-mix(in oklab, var(--muted) 18%, transparent);
+}
+.header-inner{max-width:1140px; margin:0 auto; padding:12px 16px; display:flex; gap:10px; align-items:center}
+.brand{font-weight:900; letter-spacing:.2px}
+.brand b{color:var(--brand)}
+nav{margin-left:auto; display:flex; gap:8px; flex-wrap:wrap}
+nav a{color:var(--muted); text-decoration:none; padding:8px 10px; border-radius:10px}
+nav a:hover{color:var(--text); background: color-mix(in oklab, var(--brand) 14%, transparent)}
+.btn{
+  appearance:none; border:1px solid color-mix(in oklab, var(--muted) 25%, transparent);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--card) 96%, transparent), color-mix(in oklab, var(--card) 90%, transparent));
+  color:var(--text); border-radius:12px; padding:10px 14px; cursor:pointer; box-shadow:var(--shadow); transition:.2s;
+}
+.btn:hover{transform:translateY(-1px); box-shadow: 0 14px 34px rgba(0,0,0,.18)}
+.icon{font-size:18px}
+
+.container{max-width:1140px; margin: 28px auto 90px; padding:0 16px; display:grid; grid-template-columns: 280px 1fr; gap:22px}
+@media (max-width:1024px){ .container{grid-template-columns:1fr} }
+
+/* TOC */
+.toc{
+  position:sticky; top:76px; align-self:start; background:var(--card); border-radius:18px; padding:14px;
+  border:1px solid color-mix(in oklab, var(--muted) 20%, transparent);
+  box-shadow:var(--shadow); z-index:10; /* content can float over header but under dialogs */
+}
+.toc h4{margin:6px 8px 10px; color:var(--muted); font-size:14px; font-weight:800}
+.toc a{display:block; padding:9px 10px; margin:4px 0; color:var(--text); text-decoration:none; border-radius:10px}
+.toc a:hover{background: color-mix(in oklab, var(--brand) 12%, transparent)}
+.toc .small{color:var(--muted)}
+.toc .close{display:none}
+
+@media (max-width:1024px){
+  .toc{ position:fixed; top:64px; left:12px; right:12px; max-height:70vh; overflow:auto; display:none }
+  .toc.show{ display:block; animation: slide .18s ease-out }
+  .toc .close{ display:block; margin:2px 0 8px 0 }
+  @keyframes slide{from{opacity:0; transform:translateY(-6px)} to{opacity:1; transform:translateY(0)}}
+  #tocFab{ display:flex }
+}
+
+/* floating toggle button */
+#tocFab{
+  position:fixed; right:16px; bottom:20px; z-index:60; display:none; align-items:center; gap:8px
+}
+
+/* sections */
+.section{
+  background: var(--card);
+  border:1px solid color-mix(in oklab, var(--muted) 20%, transparent);
+  border-radius:20px; padding:22px; margin-bottom:22px; box-shadow: var(--shadow);
+  scroll-margin-top: 84px; /* prevent header covering anchors */
+}
+.section h2{margin:.2rem 0 1rem; font-size:24px}
+.kicker{display:inline-block; font-size:12px; color:var(--muted); letter-spacing:.4px; text-transform:uppercase}
+
+.grid{display:grid; gap:14px}
+.grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:960px){ .grid.cols-3{grid-template-columns:1fr} .grid.cols-2{grid-template-columns:1fr} }
+
+.card{
+  border:1px solid color-mix(in oklab, var(--muted) 16%, transparent);
+  border-radius:16px; padding:16px; background:
+    radial-gradient(100% 100% at 0% 0%, color-mix(in oklab, var(--brand) 3%, transparent), transparent 60%),
+    linear-gradient(180deg, color-mix(in oklab, var(--card) 98%, transparent), color-mix(in oklab, var(--card) 90%, transparent));
+}
+.card h3{margin:.2rem 0 .6rem}
+.badges{display:flex; gap:6px; flex-wrap:wrap; margin:.3rem 0 .6rem}
+.badge{font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid color-mix(in oklab, var(--muted) 25%, transparent)}
+.badge.strong{border-color: color-mix(in oklab, var(--accent) 60%, black); color: var(--accent)}
+.badge.calm{border-color: color-mix(in oklab, var(--ok) 60%, black); color: var(--ok)}
+.badge.cold{border-color: color-mix(in oklab, var(--brand) 60%, black); color: var(--brand)}
+.badge.sharp{border-color: color-mix(in oklab, var(--danger) 60%, black); color: var(--danger)}
+
+.toolbar{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px}
+.toolbar .btn{padding:8px 10px; font-size:14px}
+code.copyable, .quote{
+  display:block; background: color-mix(in oklab, var(--bg) 70%, #000);
+  border:1px dashed color-mix(in oklab, var(--muted) 25%, transparent); border-radius:12px; padding:12px; white-space:pre-wrap; user-select:text;
+}
+
+.timeline{position:relative; padding-left:22px}
+.timeline::before{content:""; position:absolute; top:8px; bottom:8px; left:10px; width:2px; background: color-mix(in oklab, var(--muted) 30%, transparent)}
+.step{position:relative; margin:16px 0; padding-left:6px}
+.step::before{content:""; position:absolute; left:-14px; top:6px; width:12px; height:12px; background: var(--brand-2); border-radius:50%;
+  box-shadow:0 0 0 4px color-mix(in oklab, var(--brand-2) 25%, transparent)}
+
+fieldset{border:1px solid color-mix(in oklab, var(--muted) 25%, transparent); border-radius:14px; padding:12px}
+legend{padding:0 6px; color:var(--muted); font-size:12px}
+label{font-size:14px; color:var(--muted)}
+.input, textarea, select{
+  width:100%; padding:10px 12px; border-radius:10px; border:1px solid color-mix(in oklab, var(--muted) 25%, transparent);
+  background:var(--card); color:var(--text)
+}
+.row{display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:10px}
+@media (max-width:780px){ .row{grid-template-columns:1fr} }
+
+.gen-output{min-height:140px}
+
+hr.sep{border:none; height:1px; background: color-mix(in oklab, var(--muted) 20%, transparent); margin:14px 0}
+
+footer{max-width:1140px; margin:50px auto; padding:0 16px; color:var(--muted)}
+.small{font-size:12px; color:var(--muted)}
+
+.toast{
+  position:fixed; left:50%; bottom:24px; transform:translateX(-50%);
+  background:var(--text); color:var(--bg); padding:10px 14px; border-radius:999px; display:none; box-shadow:var(--shadow); z-index:70
+}
+.toast.show{display:block; animation:fade .2s ease-out}
+@keyframes fade{from{opacity:0; transform:translateX(-50%) translateY(4px)} to{opacity:1; transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+<header aria-label="页眉">
+  <div class="header-inner">
+    <div class="brand">高杀伤<b>·</b>优雅反击</div>
+    <nav aria-label="主导航">
+      <a href="#theory">核心理论</a>
+      <a href="#pua">PUA解析</a>
+      <a href="#method">反击方法论</a>
+      <a href="#quick10">速查</a>
+      <a href="#practice">实战应用</a>
+      <a href="#people">适用人群</a>
+      <a href="#library">参考资料</a>
+    </nav>
+    <button id="toggleTheme" class="btn" aria-label="切换夜间模式"><span class="icon">🌓</span> 夜间</button>
+  </div>
+</header>
+
+<main class="container">
+  <!-- TOC -->
+  <aside class="toc" id="toc" aria-label="目录" aria-hidden="true">
+    <button class="btn close" onclick="toggleTOC(false)">关闭目录</button>
+    <h4>目录</h4>
+    <a href="#theory" onclick="toggleTOC(false)">第一部分：核心理论</a>
+    <a href="#pua" onclick="toggleTOC(false)">第二部分：PUA套路解析</a>
+    <a href="#method" onclick="toggleTOC(false)">第三部分：反击方法论</a>
+    <a href="#quick10" onclick="toggleTOC(false)">速查：10 条反击</a>
+    <a href="#practice" onclick="toggleTOC(false)">第四部分：实战应用</a>
+    <a href="#people" onclick="toggleTOC(false)">第五部分：适用人群</a>
+    <a href="#generator" onclick="toggleTOC(false)">万能回击生成器</a>
+    <a href="#timeline" onclick="toggleTOC(false)">关系发展时间线</a>
+    <a href="#library" onclick="toggleTOC(false)">第六部分：参考资料</a>
+    <hr class="sep">
+    <small class="small">提示：点击任何卡片的“复制”即可一键复制话术。</small>
+  </aside>
+  <div id="tocFab"><button class="btn" onclick="toggleTOC(true)">📑 目录</button></div>
+
+  <!-- Content -->
+  <section>
+    <!-- 核心理论 -->
+    <section id="theory" class="section" aria-labelledby="theory-h">
+      <span class="kicker">第一部分</span>
+      <h2 id="theory-h">核心理论</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>颠覆性观点</h3>
+          <p><b>“识别渣”是伪需求</b>：与其把精力押注在识别，不如建立<b>可执行的边界与回应机制</b>；边界能在陌生场中自我生效。</p>
+        </div>
+        <div class="card">
+          <h3>人性真相</h3>
+          <p>大多数人会被<b>环境与强化机制</b>影响；比起“好/坏”二分，更应关注<b>模式是否可被改变</b>。</p>
+        </div>
+        <div class="card">
+          <h3>关键洞察：行为强化</h3>
+          <p>沟通→反馈→奖惩→习惯的闭环决定关系走向。你<b>持续强化</b>什么，关系就<b>变成</b>什么。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PUA 解析 -->
+    <section id="pua" class="section" aria-labelledby="pua-h">
+      <span class="kicker">第二部分</span>
+      <h2 id="pua-h">PUA套路解析</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>四大类否定性语言</h3>
+          <ul>
+            <li>外貌贬低 · 例：<i>“你这样谁会喜欢”</i></li>
+            <li>能力否定 · 例：<i>“你搞不定这个”</i></li>
+            <li>情感操控 · 例：<i>“你太敏感了”</i></li>
+            <li>社交孤立 · 例：<i>“别跟他们混了”</i></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>错误反应模式</h3>
+          <ul>
+            <li>过度解释、情绪失控</li>
+            <li>自我怀疑、讨好补偿</li>
+            <li>被动迎合、责任错位</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 反击方法论 -->
+    <section id="method" class="section" aria-labelledby="method-h">
+      <span class="kicker">第三部分</span>
+      <h2 id="method-h">五步反击法 + 模板卡片</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>五步反击原理</h3>
+          <ol>
+            <li><b>拒绝定义</b>（不接标签）</li>
+            <li><b>重新赋义</b>（转正概念）</li>
+            <li><b>展示价值</b>（自我证成）</li>
+            <li><b>明确拒绝</b>（边界落地）</li>
+            <li><b>优雅收尾</b>（情绪主导）</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>万能模板（可复制）</h3>
+          <code class="copyable" id="tpl">
+你说我[攻击词]，
+可这份[攻击词]装着我一路走来[积极诠释]，
+守住的[原则/边界]，
+以及[专属细节]。
+它保护我，
+也容下了我的整个世界，
+只是——没有你的位置。
+它随着[经历]而[变化]，
+却从来不是你以为的[贬义词]。
+省流版：[狠话]
+          </code>
+          <div class="toolbar">
+            <button class="btn" onclick="copyText('#tpl')">复制</button>
+            <button class="btn" onclick="scrollToEl('#generator')">用生成器填充</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>语气与情绪标签</h3>
+          <div class="badges">
+            <span class="badge strong">坚定型</span>
+            <span class="badge calm">冷静型</span>
+            <span class="badge sharp">锋利型</span>
+            <span class="badge cold">疏离型</span>
+          </div>
+          <p class="small">建议：场上“先冷静后锋利”；仅在多次越界后使用“锋利型”。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 条速查表 -->
+    <section id="quick10" class="section" aria-labelledby="q10-h">
+      <span class="kicker">速查</span>
+      <h2 id="q10-h">高杀伤优雅反击 · 10 条</h2>
+      <div class="grid cols-2" id="cards">
+        <!-- 动态填充 10 卡片 -->
+      </div>
+    </section>
+
+    <!-- 实战应用（移除音频，改为更实用清单） -->
+    <section id="practice" class="section" aria-labelledby="prac-h">
+      <span class="kicker">第四部分</span>
+      <h2 id="prac-h">实战应用：语调要点 & 心理准备 & 效果管理</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>语调要点</h3>
+          <ul>
+            <li><b>慢半拍</b>：读一遍，再发；降低冲动。</li>
+            <li><b>短句优先</b>：每句 10~18 字，留呼吸位。</li>
+            <li><b>先事实，后态度</b>：先描述，再结论。</li>
+            <li><b>去形容词</b>：减少“总是/从来/必须”。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>心理准备</h3>
+          <ul>
+            <li>发送前：深呼吸 30 秒，回看边界。</li>
+            <li>发送后：不解释、不拉扯；把时间给沉默。</li>
+            <li>复盘：记录触发词与最佳回应，下次直达。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>效果管理</h3>
+          <ul>
+            <li>对方愤怒：保持冷静型话术，减少输入。</li>
+            <li>对方沉默：不追问；把决定权交还给自己。</li>
+            <li>对方道德绑架：重复记录事实 + 重申边界。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 适用人群 -->
+    <section id="people" class="section" aria-labelledby="people-h">
+      <span class="kicker">第五部分</span>
+      <h2 id="people-h">适用人群（5 类型）</h2>
+      <div class="grid cols-3">
+        <div class="card"><h3>推卸责任型</h3><p>惯性转移话题与责任，常以“你太敏感”开场。</p></div>
+        <div class="card"><h3>控制欲强型</h3><p>热衷下定义与规则化，要求按其剧本行事。</p></div>
+        <div class="card"><h3>假性深情型</h3><p>以“做自己”包装自私，回避承诺与调整。</p></div>
+        <div class="card"><h3>道德绑架型</h3><p>用“你应该懂我”罗列义务，忽略平等与尊重。</p></div>
+        <div class="card"><h3>精神优越型</h3><p>以“高标准”压低你价值，实为边界测试。</p></div>
+      </div>
+    </section>
+
+    <!-- 生成器 -->
+    <section id="generator" class="section" aria-labelledby="gen-h">
+      <span class="kicker">工具</span>
+      <h2 id="gen-h">万能回击生成器</h2>
+      <fieldset>
+        <legend>填空即可生成文本</legend>
+        <div class="row">
+          <div>
+            <label>攻击词</label>
+            <input class="input" id="g_atk" placeholder="如：敏感 / 固执 / 难搞" />
+          </div>
+          <div>
+            <label>积极诠释</label>
+            <input class="input" id="g_pos" placeholder="如：共情 / 信念 / 原则 / 自爱" />
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>专属细节</label>
+            <input class="input" id="g_det" placeholder="如：跌跌撞撞的日子里建立的原则、买单离场的勇气" />
+          </div>
+          <div>
+            <label>经历与变化</label>
+            <input class="input" id="g_prog" placeholder="如：随着经历而成熟 / 随风雨而坚韧" />
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>对方的贬义词</label>
+            <input class="input" id="g_neg" placeholder="如：玻璃心 / 死板 / 麻烦" />
+          </div>
+          <div>
+            <label>省流狠话</label>
+            <select class="input" id="g_end">
+              <option>滚吧</option>
+              <option>请自便</option>
+              <option>到此为止</option>
+              <option>保重，别联系</option>
+            </select>
+          </div>
+        </div>
+        <div class="toolbar" style="margin-top:10px">
+          <button class="btn" onclick="gen()">一键生成</button>
+          <button class="btn" onclick="copyText('#g_out')">复制结果</button>
+          <button class="btn" onclick="resetGen()">清空</button>
+        </div>
+        <textarea id="g_out" class="input gen-output" placeholder="生成结果会出现在这里…" aria-label="生成文本输出"></textarea>
+      </fieldset>
+    </section>
+
+    <!-- 时间轴 -->
+    <section id="timeline" class="section" aria-labelledby="tl-h">
+      <span class="kicker">路径</span>
+      <h2 id="tl-h">关系发展时间线（从热情到操控，再到反击）</h2>
+      <div class="timeline">
+        <div class="step">
+          <h3>1. 初期热情</h3>
+          <p>密集赞美、快速亲密；潜伏“玩笑式贬低”。</p>
+        </div>
+        <div class="step">
+          <h3>2. 标签化与转移</h3>
+          <p>把合理诉求贴上“敏感/难搞”标签，诱导自我怀疑。</p>
+        </div>
+        <div class="step">
+          <h3>3. 贬低与控制</h3>
+          <p>扭曲边界为“死板”，用道德/情绪施压。</p>
+        </div>
+        <div class="step">
+          <h3>4. 反击与切断</h3>
+          <p>拒绝定义→重新赋义→明确拒绝→优雅收尾，降低消耗。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 参考资料 -->
+    <section id="library" class="section" aria-labelledby="lib-h">
+      <span class="kicker">第六部分</span>
+      <h2 id="lib-h">参考资料</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>Skinner（1953）</h3>
+          <p><i>Science and Human Behavior</i>：行为强化与奖惩机制的系统框架。</p>
+        </div>
+        <div class="card">
+          <h3>Bandura（1977）</h3>
+          <p><i>Social Learning Theory</i>：观察与模仿对行为形成的影响。</p>
+        </div>
+        <div class="card">
+          <h3>Cialdini（2006）</h3>
+          <p><i>Influence</i>：六大说服原则，识别操纵与影响策略。</p>
+        </div>
+        <div class="card">
+          <h3>ABC 模型</h3>
+          <p>触发（A）→信念（B）→情绪（C）的认知行为疗法核心框架。</p>
+        </div>
+        <div class="card">
+          <h3>边界设定五步法</h3>
+          <p>明确需求、表达立场、保持一致、执行后果、复盘记录。</p>
+        </div>
+        <div class="card">
+          <h3>延伸：TED & 个案分析</h3>
+          <p>The Power of Saying No、关系操控去敏化读物与案例。</p>
+        </div>
+      </div>
+    </section>
+
+  </section>
+</main>
+
+<footer>
+  <p class="small">精修版：更饱满的配色、移除音频模块、目录可折叠。将数据与登录等按需接入即可上线。</p>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite">已复制到剪贴板</div>
+
+<script>
+// theme
+const toggleBtn = document.getElementById('toggleTheme');
+const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+const savedTheme = localStorage.getItem('theme');
+if(savedTheme === 'dark' || (!savedTheme && prefersDark)){ document.body.classList.add('dark'); }
+toggleBtn.onclick = ()=>{
+  document.body.classList.toggle('dark');
+  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+};
+
+// TOC show/hide for mobile
+const toc = document.getElementById('toc');
+function toggleTOC(show){
+  if(window.matchMedia('(max-width:1024px)').matches){
+    toc.classList.toggle('show', !!show);
+    toc.setAttribute('aria-hidden', show? 'false':'true');
+  }
+}
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape') toggleTOC(false);
+});
+
+// floating toc button position
+function updateFab(){
+  const fab = document.getElementById('tocFab');
+  if(window.matchMedia('(max-width:1024px)').matches){ fab.style.display='flex'; } else { fab.style.display='none'; toc.classList.remove('show'); toc.setAttribute('aria-hidden','true'); }
+}
+updateFab();
+window.addEventListener('resize', updateFab);
+
+// copy helpers
+function toast(msg='已复制到剪贴板'){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 1800);
+}
+async function copyText(sel){
+  const el = document.querySelector(sel);
+  const txt = el?.value ?? el?.innerText ?? '';
+  try{ await navigator.clipboard.writeText(txt.trim()); toast(); }catch(e){
+    const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast(); }catch(err){ alert('复制失败，请手动选择文本复制'); }
+    finally{ document.body.removeChild(ta); }
+  }
+}
+function scrollToEl(sel){ document.querySelector(sel)?.scrollIntoView({behavior:'smooth', block:'start'}); }
+
+// cards data (same as before)
+const quickList = [
+{title:'“你太敏感了”', tone:['冷静型','坚定型'], body:`你说我太敏感，
+可这份敏感装着我一路走来累积的共情与细腻，
+守住的底线，
+以及对值得之人的真诚。
+它保护我，也容下了我的整个世界，
+只是——没有你的位置。
+它随着经历而成熟，
+却从来不是你以为的玻璃心。`, short:'省流版：请自便。'},
+{title:'“你太固执了”', tone:['坚定型'], body:`你说我太固执，
+可这份固执装着我一路走来坚持的信念，
+守住的原则，以及不违心的真诚……
+它保护我，也容下了我的整个世界，只是——没有你的位置。
+它随着时间变得坚定，却从来不是你以为的死板。`, short:'省流版：到此为止。'},
+{title:'“你要求太多”', tone:['冷静型','锋利型'], body:`你说我要求太多，
+可这些要求装着我一路守住的尊严与边界，
+以及真心换真心的信念……
+它保护我，也容下我的世界，只是——没有你的位置。
+它随着认知提升而升级，却不是你以为的挑剔。`, short:'省流版：各取所需，别联系。'},
+{title:'“你太强势了”', tone:['坚定型'], body:`你说我太强势，
+可这份强势装着我学会的独立与自由，
+以及敢于担当的勇气……
+它保护我，也容下我的世界，只是——没有你的位置。
+它经风雨更坚韧，而非你以为的咄咄逼人。`, short:'省流版：不用配合你。'},
+{title:'“你变了”', tone:['冷静型'], body:`你说我变了，
+这份变化装着我的成长与觉醒，
+守住的底线，以及不再为错的人妥协的心……
+它保护我，也容下我的世界，只是——没有你的位置。
+它随时光绽放，而非你以为的背叛。`, short:'省流版：向前走。'},
+{title:'“你太冷漠了”', tone:['疏离型'], body:`你说我太冷漠，
+这份克制装着我收起的天真与自我保护，
+让温暖不再被消耗……
+它保护我，也容下我的世界，只是——没有你的位置。
+它经教训而克制，而非你以为的无情。`, short:'省流版：不必熟络。'},
+{title:'“你太自私了”', tone:['坚定型'], body:`你说我太自私，
+这份自爱装着我守住的健康与精力，
+不再被榨干……
+它保护我，也容下我的世界，只是——没有你的位置。
+它随界限感生长，而非你以为的冷血。`, short:'省流版：我的人生我做主。'},
+{title:'“你太情绪化了”', tone:['冷静型'], body:`你说我太情绪化，
+这份情感装着我对生活的热度与真诚，
+为值得的人全情投入……
+它保护我，也容下我的世界，只是——没有你的位置。
+它使感知力丰盈，而非你以为的难相处。`, short:'省流版：不必评判我。'},
+{title:'“你太骄傲了”', tone:['坚定型','锋利型'], body:`你说我太骄傲，
+这份自尊装着我走来的自信与荣耀，
+不随意低头……
+它保护我，也容下我的世界，只是——没有你的位置。
+它让价值稳固，而非你以为的傲慢。`, short:'省流版：不为你降级。'},
+{title:'“你的需求像一个盒子”', tone:['锋利型','冷静型'], body:`你说我的需求像一个盒子，四四方方。
+可我的盒子，装着我跌跌撞撞的日子里建立的原则，
+守住的边界，
+有温度的小心翼翼的关心，
+看破看淡看不见的宽容，
+还有买单离场的勇气。
+它保护我，它把我的世界都容下了——却容不下你。
+它随四季涨落，谁说它是四四方方的？`, short:'省流版：滚吧。'}
+];
+
+function renderCards(){
+  const host = document.getElementById('cards');
+  host.innerHTML = '';
+  quickList.forEach((item, idx)=>{
+    const id = `card_${idx}`;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3>${item.title}</h3>
+      <div class="badges">${item.tone.map(t=>`<span class="badge ${clsByTone(t)}">${t}</span>`).join('')}</div>
+      <div class="quote" id="${id}">${escapeHtml(item.body)}</div>
+      <p class="small">${item.short}</p>
+      <div class="toolbar">
+        <button class="btn" onclick="copyText('#${id}')">复制</button>
+        <button class="btn" onclick="insertToGen(${idx})">放入生成器</button>
+      </div>
+    `;
+    host.appendChild(card);
+  });
+}
+function clsByTone(t){
+  if(t.includes('锋利')) return 'sharp';
+  if(t.includes('坚定')) return 'strong';
+  if(t.includes('冷静')) return 'calm';
+  if(t.includes('疏离')) return 'cold';
+  return '';
+}
+function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+function insertToGen(idx){
+  const text = quickList[idx].body;
+  const line = text.split('\n')[0];
+  const atk = (line.match(/你说我(太)?(.+?)[，,。]/) || line.match(/你说我的(.+?)，/))?.[2] || '';
+  document.getElementById('g_atk').value = atk;
+  document.getElementById('g_pos').value = '';
+  document.getElementById('g_det').value = '';
+  document.getElementById('g_prog').value = '';
+  document.getElementById('g_neg').value = '';
+  document.getElementById('g_end').value = '滚吧';
+  document.getElementById('g_out').value = text.trim() + `\n\n${quickList[idx].short}`;
+  scrollToEl('#generator');
+}
+
+function gen(){
+  const atk = v('g_atk') || '敏感';
+  const pos = v('g_pos') || '共情与细腻';
+  const det = v('g_det') || '跌跌撞撞的日子里建立的原则、守住的边界、买单离场的勇气';
+  const prog = v('g_prog') || '随着经历而成熟';
+  const neg = v('g_neg') || '玻璃心';
+  const end = v('g_end');
+  const out = `你说我${atk}，
+可这份${atk}装着我一路走来${pos}，
+以及${det}。
+它保护我，也容下了我的整个世界，
+只是——没有你的位置。
+它${prog}，却从来不是你以为的${neg}。
+省流版：${end}。`;
+  document.getElementById('g_out').value = out;
+  toast('已生成');
+}
+function v(id){ return (document.getElementById(id).value || '').trim(); }
+function resetGen(){ ['g_atk','g_pos','g_det','g_prog','g_neg'].forEach(id=>document.getElementById(id).value=''); document.getElementById('g_end').selectedIndex=0; document.getElementById('g_out').value=''; }
+
+renderCards();
+</script>
+</body>
+</html>
